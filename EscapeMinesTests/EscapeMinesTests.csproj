@@ -17,4 +17,10 @@
     <ProjectReference Include="..\EscapeMines\EscapeMines.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="GameInstructions.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
