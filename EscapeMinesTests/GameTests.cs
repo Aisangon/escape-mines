@@ -1,6 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace EscapeMinesTests
@@ -37,8 +39,30 @@ namespace EscapeMinesTests
         {
             string mines = "1,1 1,3 3,3";
             string[] minesList = mines.Split();
+            string[,] board = new string[4, 4];
 
-            Assert.IsTrue(minesList.Length > 0);
+            foreach (string mine in minesList)
+            {
+                string[] splitMine = mine.Split(",");
+                int sm1 = int.Parse(splitMine[0]);
+                int sm2 = int.Parse(splitMine[1]);
+                board[sm1, sm2] = "mine";
+            }
+
+            Assert.IsTrue(board[1, 1].Contains("mine"));
+        }
+
+        [TestMethod]
+        public void SetExit()
+        {
+            string[,] board = new string[5, 3];
+            string exit = "4 2";
+            string[] sExit = exit.Split();
+            int se1 = int.Parse(sExit[0]);
+            int se2 = int.Parse(sExit[1]);
+            board[se1, se2] = "exit";
+
+            Assert.IsTrue(board[4, 2].Contains("exit"));
         }
     }
 }
