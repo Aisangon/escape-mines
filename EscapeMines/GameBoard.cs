@@ -4,15 +4,17 @@ using System.Text;
 
 namespace EscapeMines
 {
-    class GameBoard
+    public class GameBoard
     {
         private string[] _gameInstructions;
         public string[,] grids;
-        private string boardSize;
+        public string boardSize;
         public int rows;
         public int columns;
-        private string minesList;
-        private string exit;
+        public string minesList;
+        public string exit;
+
+        public GameBoard() { }
 
         public GameBoard(string[] gameInstructions)
         {

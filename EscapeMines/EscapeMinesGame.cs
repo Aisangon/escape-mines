@@ -5,10 +5,11 @@ using System.Text;
 
 namespace EscapeMines
 {
-    class EscapeMinesGame
+    public class EscapeMinesGame
     {
         private string _fileName;
-        private string[] textFile;
+        public string[] textFile;
+        public string gameResult;
         private GameBoard gameBoard;
         private Turtle turtle;
 
@@ -83,21 +84,23 @@ namespace EscapeMines
             }
 
             string turtlePosition = gameBoard.grids[turtle.posX, turtle.posY];
-            string result = "Still in danger. Turtle has not hit a mine or found the exit.";
+            string result = $"Still in {GameObjects.Danger}. Turtle has not hit a mine or found the exit.";
 
             if (!string.IsNullOrEmpty(turtlePosition))
             {
                 if (turtlePosition.Contains(GameObjects.Mine))
                 {
-                    result = "Oh! Turtle hit a mine.";
+                    result = $"Oh! Turtle hit a {GameObjects.Mine}.";
                 }
                 else if (turtlePosition.Contains(GameObjects.Exit))
                 {
-                    result = "Success! Turtle found the exit.";
+                    result = $"Success! Turtle found the {GameObjects.Exit}.";
                 }
             }
 
             Console.WriteLine($"Result: {result}");
+
+            gameResult = result;
         }
     }
 }
