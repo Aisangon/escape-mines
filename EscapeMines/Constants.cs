@@ -28,6 +28,7 @@ namespace EscapeMines
         public const string Turtle = "Turtle";
         public const string Mine = "Mine";
         public const string Exit = "Exit";
+        public const string Danger = "Danger";
     }
 
 }

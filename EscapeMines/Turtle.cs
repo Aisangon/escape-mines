@@ -4,12 +4,14 @@ using System.Text;
 
 namespace EscapeMines
 {
-    class Turtle
+    public class Turtle
     {
-        private string _initialPosition;
+        public string _initialPosition;
         public int posX;
         public int posY;
         public string facingPos;
+
+        public Turtle() { }
 
         public Turtle(string initalPoition)
         {
@@ -31,7 +33,7 @@ namespace EscapeMines
             }
         }
 
-        private int[,] SetInitalPosition()
+        public int[,] SetInitalPosition()
         {
             string[] positions = _initialPosition.Split();
             if(positions.Length > 3)
@@ -47,16 +49,6 @@ namespace EscapeMines
             Console.WriteLine($"Turtle initial position x: {posX}, y: {posY}, facing: {facingPos}");
 
             return new int[posX, posY];
-        }
-
-        public int[,] GetCurrentPosition()
-        {
-            return new int[posX, posY];
-        }
-
-        public string Isfacing()
-        {
-            return facingPos;
         }
 
         public string Rotate(string direction)
