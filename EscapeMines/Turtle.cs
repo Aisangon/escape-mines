@@ -14,7 +14,21 @@ namespace EscapeMines
         public Turtle(string initalPoition)
         {
             _initialPosition = initalPoition;
-            SetInitalPosition();
+
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            try
+            {
+                SetInitalPosition();
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private int[,] SetInitalPosition()
@@ -23,7 +37,7 @@ namespace EscapeMines
             if(positions.Length > 3)
             {
                 Console.WriteLine("Could not set turtle position. Instructions too long.");
-                return new int[0, 0];
+                return null;
             }
 
             posY = int.Parse(positions[0]);
@@ -52,57 +66,80 @@ namespace EscapeMines
                 return string.Empty;
             }
 
-            if(facingPos == "E" && direction == "L" || facingPos == "W" && direction == "R")
+            if(
+                facingPos == Coordinates.East && direction == Direction.Left || 
+                facingPos == Coordinates.West && direction == Direction.Right
+            )
             {
-                facingPos = "N";
+                facingPos = Coordinates.North;
             }
-            else if(facingPos == "S" && direction == "L" || facingPos == "N" && direction == "R")
+            else if(
+                facingPos == Coordinates.South && direction == Direction.Left || 
+                facingPos == Coordinates.North && direction == Direction.Right
+            )
             {
-                facingPos = "E";
+                facingPos = Coordinates.East;
             }
-            else if(facingPos == "W" && direction == "L" || facingPos == "E" && direction == "R")
+            else if(
+                facingPos == Coordinates.West && direction == Direction.Left || 
+                facingPos == Coordinates.East && direction == Direction.Right
+            )
             {
-                facingPos = "S";
+                facingPos = Coordinates.South;
             }
-            else if(facingPos == "N" && direction == "L" || facingPos == "S" && direction == "R")
+            else if(
+                facingPos == Coordinates.North && direction == Direction.Left || 
+                facingPos == Coordinates.South && direction == Direction.Right
+            )
             {
-                facingPos = "W";
+                facingPos = Coordinates.West;
             }
 
-            Console.WriteLine($"Turtle rotated to the {(direction == "R" ? "Right" : "Left")}.");
+            Console.WriteLine($"Turtle rotated to the {(direction == Direction.Right ? "right" : "left")}.");
 
             return facingPos;
         }
 
+        public bool CanMove(int rows, int columns)
+        {
+            if (posX == 0 && facingPos == Coordinates.North || posX == columns && facingPos == Coordinates.South)
+            {
+                return false;
+            }
+
+            if (posY == 0 && facingPos == Coordinates.West || posY == rows && facingPos == Coordinates.East)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public void Move()
         {
-            if(facingPos == "N" && posX >= 1)
+            if(facingPos == Coordinates.North && posX >= 1)
             {
                 posX -= 1;
 
                 Console.WriteLine("Turtle moved up.");
             }
-            else if (facingPos == "E" && posY >= 0)
-            {
-                posY += 1;
-
-                Console.WriteLine("Turtle moved right.");
-            }
-            else if(facingPos == "S" && posX >= 0)
+            else if (facingPos == Coordinates.South && posX >= 0)
             {
                 posX += 1;
 
                 Console.WriteLine("Turtle moved down.");
             }
-            else if(facingPos == "W" && posY >= 1)
+            else if (facingPos == Coordinates.West && posY >= 1)
             {
                 posY -= 1;
 
                 Console.WriteLine("Turtle moved left.");
             }
-            else
+            else if (facingPos == Coordinates.East && posY >= 0)
             {
-                Console.WriteLine("Cannot move, a wall is in front.");
+                posY += 1;
+
+                Console.WriteLine("Turtle moved right.");
             }
         }
     }

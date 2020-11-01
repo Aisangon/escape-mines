@@ -11,9 +11,6 @@ namespace EscapeMines
         private string[] textFile;
         private GameBoard gameBoard;
         private Turtle turtle;
-        private const string Left = "L";
-        private const string Right = "R";
-        private const string Move = "M";
 
         public EscapeMinesGame(string fileName)
         {
@@ -40,7 +37,7 @@ namespace EscapeMines
         private void ReadGameInstructions()
         {
             string filePath = Path.Combine(Environment.CurrentDirectory, _fileName);
-            textFile = File.ReadAllLines(filePath) ?? null;
+            textFile = File.ReadAllLines(filePath);
         }
 
         private void StartBoard()
@@ -54,24 +51,30 @@ namespace EscapeMines
             string turtleInstructions = textFile[3];
             turtle = new Turtle(turtleInstructions);
 
-            gameBoard.grids[turtle.posX, turtle.posY] = "turtle";
+            gameBoard.grids[turtle.posX, turtle.posY] = GameObjects.Turtle;
         }
 
-        public void Start()
+        public void StartGame()
         {
             for (int i = 4; i < textFile.Length; i++)
             {
-                Console.WriteLine(textFile[i]);
+                Console.WriteLine($"Next intructions: {textFile[i]}");
                 string[] line = textFile[i].Split();
 
                 foreach (var letter in line)
                 {
-                    if(letter.Contains(Left) || letter.Contains(Right))
+                    if(letter.Contains(Direction.Left) || letter.Contains(Direction.Right))
                     {
                         turtle.Rotate(letter);
                     }
-                    else if (letter.Contains(Move))
+                    else if (letter.Contains(Action.Move))
                     {
+                        if(!turtle.CanMove(gameBoard.rows, gameBoard.columns))
+                        {
+                            Console.WriteLine("Turtle hit a wall, can't move any further.");
+                            continue;
+                        }
+
                         turtle.Move();
                     }
 
@@ -79,19 +82,22 @@ namespace EscapeMines
                 }
             }
 
-            if (gameBoard.grids[turtle.posX, turtle.posY] != null)
+            string turtlePosition = gameBoard.grids[turtle.posX, turtle.posY];
+            string result = "Still in danger. Turtle has not hit a mine or found the exit.";
+
+            if (!string.IsNullOrEmpty(turtlePosition))
             {
-                if (gameBoard.grids[turtle.posX, turtle.posY].Contains("mine"))
+                if (turtlePosition.Contains(GameObjects.Mine))
                 {
-                    Console.WriteLine("Oh! Turtle hit a mine.");
+                    result = "Oh! Turtle hit a mine.";
                 }
-                else if (gameBoard.grids[turtle.posX, turtle.posY].Contains("exit"))
+                else if (turtlePosition.Contains(GameObjects.Exit))
                 {
-                    Console.WriteLine("Success! Turtle found the exit.");
+                    result = "Success! Turtle found the exit.";
                 }
             }
 
-            Console.WriteLine("Still in danger. Turtle has not hit a mine or found the exit.");
+            Console.WriteLine($"Result: {result}");
         }
     }
 }
