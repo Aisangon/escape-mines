@@ -6,7 +6,8 @@ namespace EscapeMines
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            EscapeMinesGame escapeMines = new EscapeMinesGame("GameInstructions.txt");
+            escapeMines.StartGame();
         }
     }
 }
